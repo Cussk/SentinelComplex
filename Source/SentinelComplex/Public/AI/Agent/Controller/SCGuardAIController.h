@@ -15,6 +15,9 @@ class SENTINELCOMPLEX_API ASCGuardAIController : public AAIController
 
 public:
 	ASCGuardAIController();
+	
+	UPROPERTY(EditDefaultsOnly, Category = "AI|Behavior")
+	TObjectPtr<UBehaviorTree> BehaviorTreeAsset;
 
 protected:
 	virtual void OnPossess(APawn* InPawn) override;
@@ -22,6 +25,6 @@ protected:
 	
 private:
 	UPROPERTY(Transient)
-	TObjectPtr<ASCGuardCharacter> ControlledGuardCharacter;
+	TWeakObjectPtr<ASCGuardCharacter> ControlledGuardCharacter;
 	
 };
