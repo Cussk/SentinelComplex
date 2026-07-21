@@ -1,5 +1,7 @@
 # Visual Studio 2015 user specific files
+.idea/
 .vs/
+.vscode/
 
 # Compiled Object files
 *.slo
@@ -35,11 +37,17 @@
 *.xcodeproj
 *.xcworkspace
 *.sln
+*.slnx
 *.suo
+*.user
+*.userprefs
 *.opensdf
 *.sdf
 *.VC.db
 *.VC.opendb
+
+*.log
+*.tmp
 
 # Precompiled Assets
 SourceArt/**/*.png
