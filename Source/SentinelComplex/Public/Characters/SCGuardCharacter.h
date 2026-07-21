@@ -14,7 +14,4 @@ class SENTINELCOMPLEX_API ASCGuardCharacter : public ACharacter
 public:
 	ASCGuardCharacter();
 
-protected:
-	virtual void BeginPlay() override;
-
 };

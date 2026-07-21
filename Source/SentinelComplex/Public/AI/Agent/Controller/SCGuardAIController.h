@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Runtime/AIModule/Classes/AIController.h"
+#include "AIController.h"
 #include "SCGuardAIController.generated.h"
 
 class ASCGuardCharacter;
@@ -17,12 +17,11 @@ public:
 	ASCGuardAIController();
 
 protected:
-
-	virtual void BeginPlay() override;
 	virtual void OnPossess(APawn* InPawn) override;
 	virtual void OnUnPossess() override;
 	
 private:
+	UPROPERTY(Transient)
 	TObjectPtr<ASCGuardCharacter> ControlledGuardCharacter;
 	
 };

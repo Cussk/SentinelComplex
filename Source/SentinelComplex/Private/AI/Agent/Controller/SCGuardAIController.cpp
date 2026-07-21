@@ -1,7 +1,7 @@
 ﻿// Copyright Kyle Cuss and Cuss Programming
 
 
-#include "SentinelComplex/Public/AI/Agent/Controller/SCGuardAIController.h"
+#include "AI/Agent/Controller/SCGuardAIController.h"
 
 #include "Characters/SCGuardCharacter.h"
 #include "SentinelComplex/SentinelComplex.h"
@@ -9,13 +9,8 @@
 
 ASCGuardAIController::ASCGuardAIController()
 {
-	PrimaryActorTick.bCanEverTick = true;
-}
-
-void ASCGuardAIController::BeginPlay()
-{
-	Super::BeginPlay();
-	
+	PrimaryActorTick.bStartWithTickEnabled = false;
+	PrimaryActorTick.bCanEverTick = false;
 }
 
 void ASCGuardAIController::OnPossess(APawn* InPawn)
@@ -26,13 +21,14 @@ void ASCGuardAIController::OnPossess(APawn* InPawn)
 	
 	if (!IsValid(LocalControlledCharacter))
 	{
-		UE_LOG(LogSCAI, Warning, TEXT("LocalControlledCharacter is not valid"));
+		UE_LOG(LogSCAI,	Error, TEXT("[%s] Failed to possess expected ASCGuardCharacter. Pawn: %s Class: %s"), 
+			*GetName(), *GetNameSafe(InPawn), *GetNameSafe(InPawn ? InPawn->GetClass() : nullptr));
+		
 		ControlledGuardCharacter = nullptr;
 		return;
 	}
 	
 	ControlledGuardCharacter = LocalControlledCharacter;
-	UE_LOG(LogSCAI, Warning, TEXT("LocalControlledCharacter is valid"));
 }
 
 void ASCGuardAIController::OnUnPossess()
