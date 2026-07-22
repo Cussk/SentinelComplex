@@ -19,10 +19,16 @@ int ASCPatrolRoute::GetNumPatrolPoints() const
 	return PatrolSpline->GetNumberOfSplinePoints();
 }
 
-bool ASCPatrolRoute::GetPatrolPointLocation(int32 PointIndex, FVector& OutPoint) const
+bool ASCPatrolRoute::GetPatrolPointLocation(const int32 PointIndex, FVector& OutPoint) const
 {
-	if (GetNumPatrolPoints() == 0 || PointIndex > GetNumPatrolPoints() - 1) return false;
+	const int32 NumPatrolPoints = GetNumPatrolPoints();
+	if (NumPatrolPoints < 0 || PointIndex >= NumPatrolPoints)
+	{
+		return false;
+	}
+	
 	OutPoint = PatrolSpline->GetLocationAtSplinePoint(PointIndex, ESplineCoordinateSpace::World);
+	
 	return true;
 }
 

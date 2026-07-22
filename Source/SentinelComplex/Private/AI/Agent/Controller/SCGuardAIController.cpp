@@ -3,11 +3,16 @@
 
 #include "AI/Agent/Controller/SCGuardAIController.h"
 
+#include "AI/Agent/Patrol/SCPatrolRoute.h"
 #include "BehaviorTree/BehaviorTree.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "Characters/SCGuardCharacter.h"
 #include "SentinelComplex/SentinelComplex.h"
 
+namespace SCBlackboardKeys
+{
+	inline const FName PatrolRoute = TEXT("PatrolRoute");
+}
 
 ASCGuardAIController::ASCGuardAIController()
 {
@@ -56,6 +61,20 @@ void ASCGuardAIController::OnPossess(APawn* InPawn)
 
 		return;
 	}
+
+	ASCPatrolRoute* AssignedPatrolRoute = ControlledGuardCharacter->GetPatrolRoute();
+	if (!IsValid(AssignedPatrolRoute))
+	{
+		UE_LOG(LogSCAI, Warning, TEXT("[%s] Guard '%s' has no valid Patrol Route assignment."),
+			*GetName(), *GetNameSafe(LocalControlledCharacter));
+	}
+	else if (AssignedPatrolRoute->GetNumPatrolPoints() == 0)
+	{
+		UE_LOG(LogSCAI, Warning, TEXT("[%s] Guard '%s' is assigned Patrol Route '%s', but the route has no points."),
+			*GetName(), *GetNameSafe(LocalControlledCharacter), *GetNameSafe(AssignedPatrolRoute));
+	}
+	
+	BlackboardComponent->SetValueAsObject(SCBlackboardKeys::PatrolRoute, AssignedPatrolRoute);
 	
 	if (!RunBehaviorTree(BehaviorTreeAsset))
 	{
