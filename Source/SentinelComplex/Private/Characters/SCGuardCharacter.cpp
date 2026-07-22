@@ -10,5 +10,10 @@ ASCGuardCharacter::ASCGuardCharacter()
 	SetReplicates(true);
 }
 
+ASCPatrolRoute* ASCGuardCharacter::GetPatrolRoute() const
+{
+	return PatrolRoute.Get();
+}
+
 
 

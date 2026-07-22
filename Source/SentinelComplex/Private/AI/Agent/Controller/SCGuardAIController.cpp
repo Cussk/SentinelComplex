@@ -30,6 +30,9 @@ void ASCGuardAIController::OnPossess(APawn* InPawn)
 		return;
 	}
 	
+		
+	ControlledGuardCharacter = LocalControlledCharacter;
+	
 	if (!IsValid(BehaviorTreeAsset))
 	{
 		UE_LOG(LogSCAI, Error, TEXT("[%s] Cannot initialize AI: BehaviorTreeAsset is invalid."), *GetName());
@@ -37,23 +40,27 @@ void ASCGuardAIController::OnPossess(APawn* InPawn)
 		return;
 	}
 	
-	UBlackboardComponent* BlackboardComponent = nullptr;
-	if (!UseBlackboard(BehaviorTreeAsset->BlackboardAsset, BlackboardComponent))
+	if (!IsValid(BehaviorTreeAsset->BlackboardAsset))
 	{
-		UE_LOG(LogSCAI, Error, TEXT("[%s] Failed to initialize Blackboard."), *GetName());
+		UE_LOG(LogSCAI, Error, TEXT("[%s] Cannot initialize AI: Behavior Tree '%s' has no valid Blackboard asset."), 
+			*GetName(), *GetNameSafe(BehaviorTreeAsset));
 
 		return;
 	}
 	
-	BlackboardComponent->SetValueAsBool(TEXT("IsInitialized"), true);
+	UBlackboardComponent* BlackboardComponent = nullptr;
+	if (!UseBlackboard(BehaviorTreeAsset->BlackboardAsset, BlackboardComponent))
+	{
+		UE_LOG(LogSCAI, Error, TEXT("[%s] Failed to initialize Blackboard '%s' for Behavior Tree '%s'."),
+			*GetName(), *GetNameSafe(BehaviorTreeAsset->BlackboardAsset), *GetNameSafe(BehaviorTreeAsset));
+
+		return;
+	}
 	
 	if (!RunBehaviorTree(BehaviorTreeAsset))
 	{
 		UE_LOG(LogSCAI, Error, TEXT("[%s] Failed to run BehaviorTree '%s.'"), *GetName(), *GetNameSafe(BehaviorTreeAsset));
-		return;
 	}
-	
-	ControlledGuardCharacter = LocalControlledCharacter;
 }
 
 void ASCGuardAIController::OnUnPossess()
