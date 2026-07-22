@@ -22,7 +22,7 @@ int ASCPatrolRoute::GetNumPatrolPoints() const
 bool ASCPatrolRoute::GetPatrolPointLocation(const int32 PointIndex, FVector& OutPoint) const
 {
 	const int32 NumPatrolPoints = GetNumPatrolPoints();
-	if (NumPatrolPoints < 0 || PointIndex >= NumPatrolPoints)
+	if (PointIndex < 0 || PointIndex >= NumPatrolPoints)
 	{
 		return false;
 	}
