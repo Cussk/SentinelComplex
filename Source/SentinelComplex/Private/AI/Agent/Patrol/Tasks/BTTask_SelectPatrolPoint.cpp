@@ -7,7 +7,15 @@
 #include "BehaviorTree/BlackboardComponent.h"
 #include "SentinelComplex/SentinelComplex.h"
 #include "AIController.h"
-#include "Types/SCAITypes.h"
+
+namespace PatrolPointMemory
+{
+	struct FSCSelectPatrolPointMemory
+	{
+		int32 NextPatrolPointIndex = 0;
+		bool bIsPatrolPointSelected = false;
+	};
+}
 
 UBTTask_SelectPatrolPoint::UBTTask_SelectPatrolPoint()
 {
@@ -53,7 +61,7 @@ EBTNodeResult::Type UBTTask_SelectPatrolPoint::ExecuteTask(UBehaviorTreeComponen
 		return EBTNodeResult::Failed;
 	}
 
-	FSCSelectPatrolPointMemory* Memory = reinterpret_cast<FSCSelectPatrolPointMemory*>(NodeMemory);
+	PatrolPointMemory::FSCSelectPatrolPointMemory* Memory = reinterpret_cast<PatrolPointMemory::FSCSelectPatrolPointMemory*>(NodeMemory);
 	
 	if (!Memory->bIsPatrolPointSelected)
 	{
@@ -87,7 +95,7 @@ EBTNodeResult::Type UBTTask_SelectPatrolPoint::ExecuteTask(UBehaviorTreeComponen
 
 uint16 UBTTask_SelectPatrolPoint::GetInstanceMemorySize() const
 {
-	return sizeof(FSCSelectPatrolPointMemory);
+	return sizeof(PatrolPointMemory::FSCSelectPatrolPointMemory);
 }
 
 void UBTTask_SelectPatrolPoint::InitializeMemory(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory,
@@ -95,5 +103,5 @@ void UBTTask_SelectPatrolPoint::InitializeMemory(UBehaviorTreeComponent& OwnerCo
 {
 	Super::InitializeMemory(OwnerComp, NodeMemory, InitType);
 	
-	InitializeNodeMemory<FSCSelectPatrolPointMemory>(NodeMemory, InitType);
+	InitializeNodeMemory<PatrolPointMemory::FSCSelectPatrolPointMemory>(NodeMemory, InitType);
 }

@@ -4,8 +4,3 @@
 
 #include "CoreMinimal.h"
 
-struct FSCSelectPatrolPointMemory
-{
-	int32 NextPatrolPointIndex = 0;
-	bool bIsPatrolPointSelected = false;
-};
